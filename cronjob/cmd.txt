@@ -1,0 +1,1 @@
+schtasks /create /sc minute /mo 1 /tn fast2pay /tr "C:\wamp64\www\fast2pay\cronjob\fast2pay.vbs /mo 1 /ru ""
