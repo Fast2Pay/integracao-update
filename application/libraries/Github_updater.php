@@ -98,6 +98,7 @@ class Github_updater
                 if($this->ci->config->item('clean_update_files'))
                 {
                     shell_exec("rm -rf {$dir}");
+                    $this->_delTree("{$dir}");
                     unlink("{$hash}.zip");
                 }
                 //Update the current commit hash
@@ -107,6 +108,14 @@ class Github_updater
             }
         }
         return false;
+    }
+
+    private function _delTree($dir) {
+        $files = array_diff(scandir($dir), array('.','..'));
+        foreach ($files as $file) {
+            (is_dir("$dir/$file")) ? $this->_delTree("$dir/$file") : unlink("$dir/$file");
+        }
+        return rmdir($dir);
     }
 
     private function _is_ignored($filename)
@@ -141,7 +150,13 @@ class Github_updater
     private function _get_and_extract($hash)
     {
         copy(self::GITHUB_URL.$this->ci->config->item('github_user').'/'.$this->ci->config->item('github_repo').'/zipball/'.$this->ci->config->item('github_branch'), "{$hash}.zip");
-        shell_exec("unzip {$hash}.zip");
+
+        $zip = new ZipArchive;
+        if ($zip->open("{$hash}.zip") === TRUE) {
+            $zip->extractTo(FCPATH);
+            $zip->close();
+        }
+
         $files = scandir('.');
         foreach($files as $file)
             if(strpos($file, $this->ci->config->item('github_user').'-'.$this->ci->config->item('github_repo')) !== FALSE)return $file;
@@ -151,17 +166,37 @@ class Github_updater
 
     private function _connect($url)
     {
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC ) ;
-        curl_setopt($ch, CURLOPT_SSLVERSION,3);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+        $refer = "";
+        $timeout = 10;
 
-        $response = curl_exec($ch);
-
-        curl_close($ch);
-        return $response;
+        $ssl = stripos($url,'https://') === 0 ? true : false;
+        $curlObj = curl_init();
+        $options = [
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_FOLLOWLOCATION => 1,
+            CURLOPT_AUTOREFERER => 1,
+            CURLOPT_USERAGENT => 'Mozilla/5.0 (compatible; MSIE 5.01; Windows NT 5.0)',
+            CURLOPT_TIMEOUT => $timeout,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_0,
+            CURLOPT_HTTPHEADER => ['Expect:'],
+            CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
+        ];
+        if ($refer) {
+            $options[CURLOPT_REFERER] = $refer;
+        }
+        if ($ssl) {
+            //support https
+            $options[CURLOPT_SSL_VERIFYHOST] = false;
+            $options[CURLOPT_SSL_VERIFYPEER] = false;
+        }
+        curl_setopt_array($curlObj, $options);
+        $returnData = curl_exec($curlObj);
+        if (curl_errno($curlObj)) {
+            //error message
+            $returnData = curl_error($curlObj);
+        }
+        curl_close($curlObj);
+        return $returnData;
     }
 }
