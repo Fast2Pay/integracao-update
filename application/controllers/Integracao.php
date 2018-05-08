@@ -11,6 +11,27 @@ class Integracao extends CI_Controller {
 
         parent::__construct();
         $this->config->load('fast2pay');
+
+        try{
+            $this->load->library('github_updater');
+
+            log_message('debug', 'Atualização iniciada.');
+            if(isset($this->github_updater) && @$this->github_updater->has_update()){
+                if(@$this->github_updater->update()){
+                    log_message('info', 'Aplicação de integração atualizada com sucesso.');
+                    echo( 'Aplicação de integração atualizada com sucesso.<br/>' );
+                }else{
+                    log_message('error', 'Ocorreu um erro ao atualizar a aplicação.');
+                    echo( 'Ocorreu um erro ao atualizar a aplicação.<br/>' );
+                }
+            }else{
+                log_message('info', 'Você já possui a última versão da aplicação de integração.');
+                echo( 'Você já possui a última versão da aplicação de integração.<br/>' );
+            }
+            log_message('debug', 'Atualização iniciada.');
+        }catch(Exception $e){
+            log_message('error', 'Ocorreu um erro ao atualizar a aplicação. '.$e);
+        }
     }
 
     /**
