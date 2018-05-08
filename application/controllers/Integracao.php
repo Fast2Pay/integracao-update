@@ -9,7 +9,7 @@ class Integracao extends CI_Controller {
         date_default_timezone_set("America/Sao_Paulo");
         setlocale(LC_ALL, 'pt_BR');
 
-        //Teste
+        //Teste de Update
         parent::__construct();
         $this->config->load('fast2pay');
     }
