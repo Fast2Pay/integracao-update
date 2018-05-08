@@ -15,14 +15,19 @@ class Update extends CI_Controller {
 
     public function index()
     {
+        log_message('debug', 'Atualização iniciada.');
         if($this->github_updater->has_update()){
             if($this->github_updater->update()){
+                log_message('info', 'Aplicação de integração atualizada com sucesso.');
                 die( 'Aplicação de integração atualizada com sucesso.' );
             }else{
+                log_message('error', 'Ocorreu um erro ao atualizar a aplicação.');
                 die( 'Ocorreu um erro ao atualizar a aplicação.' );
             }
         }else{
+            log_message('info', 'Você já possui a última versão da aplicação de integração.');
             die( 'Você já possui a última versão da aplicação de integração.' );
         }
+        log_message('debug', 'Atualização finalizada.');
     }
 }
