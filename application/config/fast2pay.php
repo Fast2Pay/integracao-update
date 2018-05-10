@@ -35,3 +35,11 @@ $config['file_extension'] = '.php';
 $config['user_fast2pay'] = 'gemoojen@gmail.com';
 $config['pass_fast2pay'] = 'zero54';
 $config['cnpj_fast2pay'] = '23305714000103';
+
+/*
+/--------------------------------------------------------------------------
+/ Configuração da Atualização
+/--------------------------------------------------------------------------
+/ Quando definido para TRUE, ativa a verificação e atualização automática baseada no repositório do Github
+*/
+$config['auto_update'] = TRUE;

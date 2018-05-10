@@ -21,7 +21,7 @@ $config['github_branch'] = 'master';
  * NOTE: You should only need to set this initially it will be
  * automatically set by the library after subsequent updates.
  */
-$config['current_commit'] = '1ddf33e59e6df866a65ea98f3c914389ad97c13b';
+$config['current_commit'] = '4eb4fab87bb0489e64d8759beaa6e9d8133b46c0';
 
 /**
  * A list of files or folders to never perform an update on.
@@ -33,7 +33,7 @@ $config['current_commit'] = '1ddf33e59e6df866a65ea98f3c914389ad97c13b';
  * 'application/views/admin/test.php'
  * and any other path with the term 'admin' in it.
  */
-$config['ignored_files'] = array('application/config', 'system');
+$config['ignored_files'] = array('application/config', 'system', 'comprovantes/COM.txt', 'comprovantes/ETH.txt', 'cronjob');
 
 /**
  * Flag to indicate if the downloaded and extracted update files
