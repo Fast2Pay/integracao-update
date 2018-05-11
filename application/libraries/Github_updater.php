@@ -42,7 +42,11 @@ class Github_updater
     public function has_update()
     {
         $branches = json_decode($this->_connect(self::API_URL.$this->ci->config->item('github_user').'/'.$this->ci->config->item('github_repo').'/branches'));
-        return $branches[0]->commit->sha !== $this->ci->config->item('current_commit');
+
+        if(is_array($branches))
+            return $branches[0]->commit->sha !== $this->ci->config->item('current_commit');
+        else
+            return false;
     }
 
     /**
@@ -169,6 +173,8 @@ class Github_updater
         $refer = "";
         $timeout = 10;
 
+        $token = $this->ci->config->item('github_token');
+
         $ssl = stripos($url,'https://') === 0 ? true : false;
         $curlObj = curl_init();
         $options = [
@@ -179,7 +185,7 @@ class Github_updater
             CURLOPT_USERAGENT => 'Mozilla/5.0 (compatible; MSIE 5.01; Windows NT 5.0)',
             CURLOPT_TIMEOUT => $timeout,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_0,
-            CURLOPT_HTTPHEADER => ['Expect:'],
+            CURLOPT_HTTPHEADER => array("Authorization: token $token"),
             CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
         ];
         if ($refer) {

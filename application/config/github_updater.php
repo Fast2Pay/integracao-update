@@ -4,6 +4,7 @@
  * The user name of the git hub user who owns the repo
  */
 $config['github_user'] = 'Fast2Pay';
+$config['github_token'] = '9f688f7fd18560b56782f64d930428b288e80251';
 
 /**
  * The repo on GitHub we will be updating from
@@ -21,7 +22,7 @@ $config['github_branch'] = 'master';
  * NOTE: You should only need to set this initially it will be
  * automatically set by the library after subsequent updates.
  */
-$config['current_commit'] = '4eb4fab87bb0489e64d8759beaa6e9d8133b46c0';
+$config['current_commit'] = '42cf40cec81108f1fb2a43e6de4bc4909c19798d';
 
 /**
  * A list of files or folders to never perform an update on.

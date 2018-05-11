@@ -12,27 +12,37 @@ class Integracao extends CI_Controller {
         parent::__construct();
         $this->config->load('fast2pay');
 
+        $this->load->model('log_m');
         try{
             if($this->config->item('auto_update')){
-                $this->load->library('github_updater');
+                $updateToday = $this->log_m->getToday();
 
-                log_message('debug', 'Atualização iniciada.');
-                if(isset($this->github_updater) && @$this->github_updater->has_update()){
-                    if(@$this->github_updater->update()){
-                        log_message('info', 'Aplicação de integração atualizada com sucesso.');
-                        echo( 'Aplicação de integração atualizada com sucesso.<br/>' );
+                if($updateToday === NULL)
+                {
+                    $this->load->library('github_updater');
+
+                    log_message('debug', 'Atualização iniciada.');
+                    if(isset($this->github_updater) && @$this->github_updater->has_update()){
+                        if(@$this->github_updater->update()){
+                            log_message('info', 'Aplicação de integração atualizada com sucesso.');
+                            echo( 'Aplicação de integração atualizada com sucesso.<br/>' );
+                            $this->log_m->insert(array('log' => 'Aplicação de integração atualizada com sucesso.'));
+                        }else{
+                            log_message('error', 'Ocorreu um erro ao atualizar a aplicação.');
+                            echo( 'Ocorreu um erro ao atualizar a aplicação.<br/>' );
+                            $this->log_m->insert(array('log' => 'Ocorreu um erro ao atualizar a aplicação.'));
+                        }
                     }else{
-                        log_message('error', 'Ocorreu um erro ao atualizar a aplicação.');
-                        echo( 'Ocorreu um erro ao atualizar a aplicação.<br/>' );
+                        log_message('info', 'Você já possui a última versão da aplicação de integração.');
+                        echo( 'Você já possui a última versão da aplicação de integração.<br/>' );
+                        $this->log_m->insert(array('log' => 'Você já possui a última versão da aplicação de integração.'));
                     }
-                }else{
-                    log_message('info', 'Você já possui a última versão da aplicação de integração.');
-                    echo( 'Você já possui a última versão da aplicação de integração.<br/>' );
+                    log_message('debug', 'Atualização finalizada.');
                 }
-                log_message('debug', 'Atualização iniciada.');
             }
         }catch(Exception $e){
             log_message('error', 'Ocorreu um erro ao atualizar a aplicação. '.$e);
+            $this->log_m->insert(array('log' => 'Ocorreu um erro ao atualizar a aplicação. '.$e));
         }
     }
 
@@ -267,10 +277,12 @@ class Integracao extends CI_Controller {
                                 //Buscamos o arquivo de comprovante
                                 $arquivoComprovante = file_get_contents(FCPATH.'comprovantes/'.PORTA_IMPRESSAO . '.txt',"r");
 
+                                $lNomeCPF = (string)$resultCobranca->Nome . (isset($valCap->cpf) && !empty($valCap->cpf) ? ' - '.(string)$valCap->cpf : '');
+
                                 //Vamos alterar as informações de {NUMERO_MESA}, {DATA_HORA} e {NOME_CLIENTE}
                                 $arquivoComprovante = str_replace('{NUMERO_MESA}', (string)$valCap->id_table, $arquivoComprovante);
                                 $arquivoComprovante = str_replace('{DATA_HORA}', (string)date('d/m/Y H:i:s'), $arquivoComprovante);
-                                $arquivoComprovante = str_replace('{NOME_CLIENTE}', (string)$resultCobranca->Nome, $arquivoComprovante);
+                                $arquivoComprovante = str_replace('{NOME_CLIENTE}', $lNomeCPF, $arquivoComprovante);
 
                                 $fpComprovante = fopen(PASTA_IMPRESSAO . (string)$valCap->nrdocumento . '.txt', "a");
 

@@ -1,6 +1,5 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-//Teste de Atualização
 
 /*
 /--------------------------------------------------------------------------
@@ -43,4 +42,4 @@ $config['cnpj_fast2pay'] = '23305714000103';
 /--------------------------------------------------------------------------
 / Quando definido para TRUE, ativa a verificação e atualização automática baseada no repositório do Github
 */
-$config['auto_update'] = TRUE;
+$config['auto_update'] = FALSE;
