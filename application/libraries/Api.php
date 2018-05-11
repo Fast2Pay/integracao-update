@@ -50,7 +50,7 @@ class Api{
             $response = $this->ci->curl->execute();
             // Errors
             if($pDebug == true){
-                echo '<pre>';die(var_dump($response));
+                // echo '<pre>';die(var_dump($response));
                 echo '<hr> Error code: ';var_dump($this->ci->curl->error_code);
                 echo '<hr> Error String: ';var_dump($this->ci->curl->error_string);
                 echo '<hr> Information: ';var_dump($this->ci->curl->info); // array
@@ -67,6 +67,8 @@ class Api{
     {
         try{
             $data_string = json_encode($pParams);
+
+
 
             //VERIFICAR FUNCIONAMENTO
             $ch = curl_init($this->ci->config->item('url_bematech').$this->ci->config->item('url_bematech_base').'MesaService.svc/'.$pMethod);
@@ -114,7 +116,7 @@ class Api{
 
         // Errors
         if($pDebug == true){
-            echo '<pre>';die(var_dump($response));
+            // echo '<pre>';die(var_dump($response));
             echo '<hr> Error code: ';var_dump($this->ci->curl->error_code);
             echo '<hr> Error String: ';var_dump($this->ci->curl->error_string);
             echo '<hr> Information: ';var_dump($this->ci->curl->info); // array
