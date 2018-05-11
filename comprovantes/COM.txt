@@ -1,6 +1,6 @@
-﻿SUPORTE03
-SUPORTE03
-COM3
+﻿NOME_DO_PC
+NOME_DO_PC
+COMX
 BEMATECH 4000 TH
 1
 1
@@ -11,11 +11,11 @@ Tela
 0
 1
 0
-192.168.25.163
+IP_DA_IMPRESSORA
 0
 9971
 FW0=================================================
-3W1   ZERO 54 - Fast2Pay
+3W1   NOME_DO_CLIENTE - Fast2Pay
 3W0=================================================
 3W0
 3W1      COMANDA: {NUMERO_MESA}

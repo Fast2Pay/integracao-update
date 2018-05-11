@@ -1,3 +1,5 @@
+x=msgbox("A integração está sendo executada!" ,0, "Integração Fast2Pay")
+
 do
 
 Dim shell
