@@ -4,7 +4,7 @@
  * The user name of the git hub user who owns the repo
  */
 $config['github_user'] = 'Fast2Pay';
-$config['github_token'] = '9f688f7fd18560b56782f64d930428b288e80251';
+$config['github_token'] = 'API_TOKEN_AQUI'; //Gerar uma nova chave no Github
 
 /**
  * The repo on GitHub we will be updating from
