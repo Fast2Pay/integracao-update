@@ -118,3 +118,8 @@ Reinicie todos os serviços do servidor WAMP.
 ## Desenvolvimento
 
 Gabriel Stringari de Miranda – [@stringariSM](https://github.com/stringariSM) – gabriel@gabrielstringari.com
+
+
+## Atualizações
+
+- Atualizaçāo automática funcionando.

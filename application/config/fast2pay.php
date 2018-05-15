@@ -32,8 +32,8 @@ $config['CodigoIntegracao'] = '44';
 
 $config['url_fast2pay'] = 'https://wst.fast2pay.com.br/v2.0/_integra/';
 $config['file_extension'] = '.php';
-$config['user_fast2pay'] = 'gemoojen@gmail.com';
-$config['pass_fast2pay'] = 'zero54';
+// $config['user_fast2pay'] = 'gemoojen@gmail.com';
+// $config['pass_fast2pay'] = 'zero54';
 $config['cnpj_fast2pay'] = '23305714000103';
 
 /*

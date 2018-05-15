@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Integracao extends CI_Controller {
 
     private $configuration = array();
+    //Teste de Atualizaçāo
     public function __construct()
     {
         date_default_timezone_set("America/Sao_Paulo");
