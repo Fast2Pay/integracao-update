@@ -4,11 +4,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Integracao extends CI_Controller {
 
     private $configuration = array();
-    //Teste de Atualizaçāo
     public function __construct()
     {
         date_default_timezone_set("America/Sao_Paulo");
         setlocale(LC_ALL, 'pt_BR');
+        setlocale(LC_NUMERIC, 'C');
 
         parent::__construct();
         $this->config->load('fast2pay');
