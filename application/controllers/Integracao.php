@@ -278,12 +278,43 @@ class Integracao extends CI_Controller {
                                 //Buscamos o arquivo de comprovante
                                 $arquivoComprovante = file_get_contents(FCPATH.'comprovantes/'.PORTA_IMPRESSAO . '.txt',"r");
 
-                                $lNomeCPF = (string)$resultCobranca->Nome . (isset($valCap->cpf) && !empty($valCap->cpf) ? ' - '.(string)$valCap->cpf : '');
+                                $lBandeira = $resultCobranca->Bandeira;
+                                switch ($lBandeira) {
+                                    case 1:
+                                        $lNomeBandeira = 'Visa';
+                                        break;
+                                    case 2:
+                                        $lNomeBandeira = 'Mastercard';
+                                        break;
+                                    case 3:
+                                        $lNomeBandeira = 'American Express';
+                                        break;
+                                    case 4:
+                                        $lNomeBandeira = 'Hipercard';
+                                        break;
+                                    case 5:
+                                        $lNomeBandeira = 'Dinners Club';
+                                        break;
+                                    case 6:
+                                        $lNomeBandeira = 'Elo';
+                                        break;
+                                    case 9:
+                                        $lNomeBandeira = 'Elo';
+                                        break;
+                                    default:
+                                        $lNomeBandeira = 'Bandeira desconhecida';
+                                        break;
+                                }
+
+                                $lNome = (string)$resultCobranca->Nome;
+                                $lCPF = (isset($valCap->cpf) && !empty($valCap->cpf) ? ' - '.(string)$valCap->cpf : '');
 
                                 //Vamos alterar as informações de {NUMERO_MESA}, {DATA_HORA} e {NOME_CLIENTE}
                                 $arquivoComprovante = str_replace('{NUMERO_MESA}', (string)$valCap->id_table, $arquivoComprovante);
                                 $arquivoComprovante = str_replace('{DATA_HORA}', (string)date('d/m/Y H:i:s'), $arquivoComprovante);
-                                $arquivoComprovante = str_replace('{NOME_CLIENTE}', $lNomeCPF, $arquivoComprovante);
+                                $arquivoComprovante = str_replace('{NOME_CLIENTE}', $lNome, $arquivoComprovante);
+                                $arquivoComprovante = str_replace('{CPF_CLIENTE}', preg_replace('/^([0-9]{3})([0-9]{3})([0-9]{3})([0-9]{2})$/', '$1.$2.$3-$4', $lCPF), $arquivoComprovante);
+                                $arquivoComprovante = str_replace('{BANDEIRA_PAGAMENTO}', $lNomeBandeira, $arquivoComprovante);
 
                                 $fpComprovante = fopen(PASTA_IMPRESSAO . (string)$valCap->nrdocumento . '.txt', "a");
 
